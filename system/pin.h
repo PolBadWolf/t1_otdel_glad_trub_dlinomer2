@@ -16,54 +16,94 @@ class tc_pin
 {
 //variables
 public:
-	unsigned char tr;
+	uint8_t tr;
+	uint8_t trFr;
+	uint8_t trSp;
 protected:
 private:
 	volatile unsigned char* ddr;
 	volatile unsigned char* port;
 	volatile unsigned char* pin;
 	unsigned mask;
-	T porog;
-	T count;
-	unsigned char fl;
+	T iPorog;
+	T iCount;
+	uint8_t iFl;
+	uint8_t flFr;
+	uint8_t flSp;
+	// ===
+	P pFrMax;
+	P pFr;
+	P pSpMax;
+	P pSp;
+	uint8_t pFrFl;
+	uint8_t pSpFl;
 //functions
 public:
-	//tc_pin() {}
-	tc_pin(volatile unsigned char* ddr, volatile unsigned char* port, volatile unsigned char* pin, unsigned char bit, T porog)
-//	{ Init(ddr, port, pin, bit, porog); }
-//	void Init(volatile unsigned char* ddr, volatile unsigned char* port, volatile unsigned char* pin, unsigned char bit, T porog)
+	tc_pin(volatile unsigned char* ddr, volatile unsigned char* port, volatile unsigned char* pin, unsigned char bit, T iPorog, P pFrM, P pSpM)
 	{
 		this->ddr = ddr;
 		this->port = port;
 		this->pin = pin;
 		this->mask = (1<<(bit & 0x07));
-		this->porog = porog;
+		this->iPorog = iPorog;
 		*this->ddr &= ~mask;
 		*this->port |= 1<<mask;
 		__delay_ms(1);
-		tr = fl = (*this->pin & mask)?1:0;
-		if (fl)
-			count = this->porog;
+		tr = iFl = (*this->pin & mask)?1:0;
+		if (iFl)
+			iCount = this->iPorog;
 		else
-			count = (T)0;
+			iCount = (T)0;
+		// protect time flags
+		trFr = trSp = flFr = flSp = 0;
+		// protect time count
+		this->pFr = this->pSp = 0;
+		// protect time - set time
+		pFrMax = pFrM;
+		pSpMax = pSpM;
 	}
-	//~tc_pin() {}
+	//
 	void Interrupt()
 	{
 		if (*this->pin & mask)
 		{
-			if ( count <  porog) count++;
-			if ((count >= porog) && !fl)
-				tr = fl = 1;
+			if ( iCount <  iPorog) iCount++;
+			if ((iCount >= iPorog) && !iFl)
+			{
+				tr = iFl = 1;	// integral
+				flFr = 1;		// flag for protect time
+				flSp = 0;
+			}
 		}
 		else
 		{
-			if ( count >  (T)0) count--;
-			if ((count == (T)0) && fl)
-				tr = fl = 0;
+			if ( iCount >  (T)0) iCount--;
+			if ((iCount == (T)0) && iFl)
+			{
+				tr = iFl = 0;	// integral
+				flFr = 0;
+				flSp = 1;		// flag for protect time
+			}
+		}
+		// protect time
+		// front
+		if (pFr > 0)	pFr--;
+		if (flFr)
+		{
+			flFr = 0;
+			if (pFr == 0)	trFr = 1;
+			pFr = pFrMax;
+		}
+		// spad
+		if (pSp > 0)	pSp--;
+		if (flSp)
+		{
+			flSp = 0;
+			if (pSp == 0)	trSp = 1;
+			pSp = pSpMax;
 		}
 	}
-	uint8_t readSensor() { return this->fl; }
+	uint8_t readSensor() { return this->iFl; }
 protected:
 private:
 	tc_pin( const tc_pin &c );
