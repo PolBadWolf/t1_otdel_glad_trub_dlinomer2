@@ -30,18 +30,17 @@ namespace ns_line
 	// ======================================
 	void Init()
 	{
-		uint16_t k = (uint8_t)(((uint32_t)150) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
-		sensors[0] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 5, k);
-		sensors[1] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 4, k);
-		sensors[2] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 7, k);
-		sensors[3] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 6, k);
-		sensors[4] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 5, k);
-		sensors[5] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 4, k);
-		sensors[6] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 7, k);
-		sensors[7] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 6, k);
-		//==
-		sensors[8] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 5, k);
-		sensors[9] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 4, k);
+		uint16_t kI = (uint8_t)(((uint32_t)10 ) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
+		uint16_t kF = (uint8_t)(((uint32_t)500) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
+		uint16_t kS = (uint8_t)(((uint32_t)500) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
+		sensors[0] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 5, kI, kF, kS);
+		sensors[1] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 4, kI, kF, kS);
+		sensors[2] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 7, kI, kF, kS);
+		sensors[3] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 6, kI, kF, kS);
+		sensors[4] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 5, kI, kF, kS);
+		sensors[5] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 4, kI, kF, kS);
+		sensors[6] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 7, kI, kF, kS);
+		sensors[7] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 6, kI, kF, kS);
 		Start();
 	}
 	void Start()

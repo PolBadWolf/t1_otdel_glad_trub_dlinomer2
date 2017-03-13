@@ -12,10 +12,10 @@
 //unsigned long  EEMEM ee_var1 = 3;
 //tc_pin<unsigned char> *l1 = new tc_pin<unsigned char>( &DDRE, &PORTE, &PINE, 4, 10 );
 
-namespace ns_line
+/*namespace ns_line
 {
 	extern tc_pin<uint16_t, uint16_t>* sensors[8];
-}
+}*/
 
 int main(void)
 {
