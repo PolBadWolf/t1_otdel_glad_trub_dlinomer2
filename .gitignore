@@ -68,6 +68,7 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+Debug/
 
 # Windows Installer files
 *.cab
@@ -77,3 +78,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.elf
+*.hex
+*.lss
+*.map
+*.srec

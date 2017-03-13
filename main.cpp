@@ -14,7 +14,7 @@
 
 namespace ns_line
 {
-	extern tc_pin<unsigned char>* sensors[8];
+	extern tc_pin<uint16_t, uint16_t>* sensors[8];
 }
 
 int main(void)

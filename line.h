@@ -21,7 +21,7 @@ namespace ns_line
 	extern uint8_t mode;
 	extern const uint8_t sensorsN;
 	
-	extern tc_pin<unsigned char>* sensors[];		// массив датчиков
+	extern tc_pin<uint16_t, uint16_t>* sensors[];		// массив датчиков
 //	extern uint8_t sensMapN;
 }; //line
 

@@ -11,7 +11,7 @@
 
 #include "path.h"
 
-template <class T>
+template <class T, class P>
 class tc_pin
 {
 //variables

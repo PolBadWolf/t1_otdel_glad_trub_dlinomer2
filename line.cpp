@@ -13,7 +13,7 @@
 namespace ns_line
 {
 	const uint8_t sensorsN = 8;
-	tc_pin<unsigned char>* sensors[8];		// массив датчиков
+	tc_pin<uint16_t, uint16_t>* sensors[8];		// массив датчиков
 	int32_t count;				// счетчик тайминга
 	int32_t times[8][2];			// массив таймингов сработок датчиков
 	uint16_t distance[8] = {0, 1400, 2800, 4200, 5600, 7000, 13250, 13950};
@@ -30,18 +30,18 @@ namespace ns_line
 	// ======================================
 	void Init()
 	{
-		uint8_t k = (uint8_t)(((uint32_t)150) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
-		sensors[0] = new tc_pin<unsigned char>(&DDRD, &PORTD, &PIND, 5, k);
-		sensors[1] = new tc_pin<unsigned char>(&DDRD, &PORTD, &PIND, 4, k);
-		sensors[2] = new tc_pin<unsigned char>(&DDRB, &PORTB, &PINB, 7, k);
-		sensors[3] = new tc_pin<unsigned char>(&DDRB, &PORTB, &PINB, 6, k);
-		sensors[4] = new tc_pin<unsigned char>(&DDRB, &PORTB, &PINB, 5, k);
-		sensors[5] = new tc_pin<unsigned char>(&DDRB, &PORTB, &PINB, 4, k);
-		sensors[6] = new tc_pin<unsigned char>(&DDRE, &PORTE, &PINE, 7, k);
-		sensors[7] = new tc_pin<unsigned char>(&DDRE, &PORTE, &PINE, 6, k);
+		uint16_t k = (uint8_t)(((uint32_t)150) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
+		sensors[0] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 5, k);
+		sensors[1] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 4, k);
+		sensors[2] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 7, k);
+		sensors[3] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 6, k);
+		sensors[4] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 5, k);
+		sensors[5] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 4, k);
+		sensors[6] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 7, k);
+		sensors[7] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 6, k);
 		//==
-		sensors[8] = new tc_pin<unsigned char>(&DDRE, &PORTE, &PINE, 5, k);
-		sensors[9] = new tc_pin<unsigned char>(&DDRE, &PORTE, &PINE, 4, k);
+		sensors[8] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 5, k);
+		sensors[9] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 4, k);
 		Start();
 	}
 	void Start()
