@@ -10,6 +10,8 @@
 #include "system/path.h"
 // #include <stdlib.h>
 
+#define msTocycl(zd)	( (uint16_t)( ((uint32_t)zd) * ((uint32_t)FtTimerMain) / ((uint32_t)1000) ) )
+
 namespace ns_line
 {
 	const uint8_t sensorsN = 8;
@@ -30,17 +32,15 @@ namespace ns_line
 	// ======================================
 	void Init()
 	{
-		uint16_t kI = (uint8_t)(((uint32_t)10 ) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
-		uint16_t kF = (uint8_t)(((uint32_t)500) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
-		uint16_t kS = (uint8_t)(((uint32_t)500) * ((uint32_t)FtTimerMain) / ((uint32_t)1000));
-		sensors[0] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 5, kI, kF, kS);
-		sensors[1] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 4, kI, kF, kS);
-		sensors[2] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 7, kI, kF, kS);
-		sensors[3] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 6, kI, kF, kS);
-		sensors[4] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 5, kI, kF, kS);
-		sensors[5] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 4, kI, kF, kS);
-		sensors[6] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 7, kI, kF, kS);
-		sensors[7] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 6, kI, kF, kS);
+		// interal, front, spad
+		sensors[0] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 5, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[1] = new tc_pin<uint16_t, uint16_t>(&DDRD, &PORTD, &PIND, 4, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[2] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 7, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[3] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 6, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[4] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 5, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[5] = new tc_pin<uint16_t, uint16_t>(&DDRB, &PORTB, &PINB, 4, msTocycl(10), msTocycl(10), msTocycl(500));
+		sensors[6] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 7, msTocycl(10), msTocycl(500), msTocycl(10));
+		sensors[7] = new tc_pin<uint16_t, uint16_t>(&DDRE, &PORTE, &PINE, 6, msTocycl(10), msTocycl(500), msTocycl(10));
 		Start();
 	}
 	void Start()
@@ -61,7 +61,7 @@ namespace ns_line
 		
 		if (mode == 1)
 		{	// ожидание ухода трубы
-			if ( (sensors[7]->readSensor() != 0) && (sensors[6]->readSensor() != 0) && (sensors[5]->readSensor() != 0) )
+			if ( (sensors[7]->readSensor() != 0) && (sensors[6]->readSensor() != 0) ) //&& (sensors[5]->readSensor() != 0) )
 			{
 				// обнуление таймингов
 				count = 0;	// счетчик тайминга
@@ -109,9 +109,9 @@ namespace ns_line
 				}				
 			}        
 			// чтение таймингов переключения датчиков
-			for (uint8_t i=0; i<8; i++)
+			for (uint8_t i = 0; i < 8; i++)
 			{
-				if (sensors[i]->tr == 0)
+				/*if (sensors[i]->tr == 0)
 				{
 					if (times[i][0] == 0)
 					{
@@ -121,6 +121,17 @@ namespace ns_line
 				}
 				if (sensors[i]->tr == 1)
 				{
+					times[i][1] = count;
+				}*/
+				if (sensors[i]->trFr != 0)
+				{
+					sensors[i]->trFr = 0;
+					times[i][0] = count;
+					times[i][1] = 0;
+				}
+				if (sensors[i]->trSp != 0)
+				{
+					sensors[i]->trSp = 0;
 					times[i][1] = count;
 				}
 			}
