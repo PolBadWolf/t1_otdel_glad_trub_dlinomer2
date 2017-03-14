@@ -111,18 +111,6 @@ namespace ns_line
 			// чтение таймингов переключения датчиков
 			for (uint8_t i = 0; i < 8; i++)
 			{
-				/*if (sensors[i]->tr == 0)
-				{
-					if (times[i][0] == 0)
-					{
-						times[i][0] = count;
-						if ((i+1) < 8) times[i+1][0] = 0;
-					}
-				}
-				if (sensors[i]->tr == 1)
-				{
-					times[i][1] = count;
-				}*/
 				if (sensors[i]->trFr != 0)
 				{
 					sensors[i]->trFr = 0;
@@ -136,7 +124,7 @@ namespace ns_line
 				}
 			}
 			// сработка последнего датчика
-			if ((sensors[7]->tr == 0) && (sensors[6]->readSensor() == 0))
+			if ((sensors[7]->trFr != 0) && (sensors[6]->readSensor() == 0))
 			{
 				mode = 0;	// расчет
 			}
