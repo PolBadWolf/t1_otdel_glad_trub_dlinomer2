@@ -19,6 +19,7 @@ namespace ns_line
 	int32_t count;				// счетчик тайминга
 	int32_t times[8][2];			// массив таймингов сработок датчиков
 	uint16_t distance[8] = {0, 1400, 2800, 4200, 5600, 7000, 13250, 13950};
+	int16_t corSensor[8];
 	uint8_t mode = 2;						// режим работы
 //	uint16_t timeOut = 0;					// тайм аут
 	// карта датчиков
@@ -186,11 +187,11 @@ namespace ns_line
 	{
 		if (mode != 0)	// расчет ?
 			return 0;	// расчет не требуется
-
-		// init distance
+		// init distance & corection
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			distance[i] = eeprom_read_word(&ns_vg::eeDistance[i]);
+			corSensor[i] = (int16_t)eeprom_read_word( (uint16_t *)&ns_vg::eeCorSensor[i] );
 		}
 		uint8_t status;
 		// ===================
@@ -263,11 +264,11 @@ namespace ns_line
 				else bNe = 6;
 			}
 		}
-		base = distance[bNe] - distance[n];
+		base = (distance[bNe] + corSensor[bNe]) - (distance[n] + corSensor[n]);
 		dochetT = times[n][1] - times[bNe][0];
-		uint16_t speedLen = distance[7] - distance[6];
-		int32_t speedTime = times[7][0] - times[6][0];
-		int16_t udl = ( ((int64_t)dochetT) * ((int64_t)speedLen) / ((int64_t)speedTime) );
+		uint16_t sampleLen = (distance[7] + corSensor[7]) - (distance[6] + corSensor[6]);
+		int32_t sampleTime = times[7][0] - times[6][0];
+		int16_t udl = (uint16_t)( ((int64_t)dochetT) * ((int64_t)sampleLen) / ((int64_t)sampleTime) );
 		*dlina = base + udl;
 		mode = 1;
 		status = 1;
