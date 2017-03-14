@@ -19,6 +19,7 @@
 
 int main(void)
 {
+			//char ssMass[256];
 	// Инициализация
 	ns_device::Init();
 	stdout = lcdStdOut;
