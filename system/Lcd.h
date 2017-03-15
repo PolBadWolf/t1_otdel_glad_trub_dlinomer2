@@ -29,10 +29,10 @@ namespace ns_lcd
 	void String(uint8_t pos, const char *stroka);
 	void String_P(uint8_t *pos, const char *stroka);
 	void String_P(uint8_t pos, const char *stroka);
-	void DigitZ(uint8_t *pos, uint8_t len, uint32_t digit);
-	void DigitZ(uint8_t pos, uint8_t len, uint32_t digit);
-	void Digit(uint8_t *pos, uint8_t len, uint32_t digit);
-	void Digit(uint8_t pos, uint8_t len, uint32_t digit);
+	void DigitZ(uint8_t *pos, uint8_t len, int32_t digit);
+	void DigitZ(uint8_t pos, uint8_t len, int32_t digit);
+	void Digit(uint8_t *pos, uint8_t len, int32_t digit);
+	void Digit(uint8_t pos, uint8_t len, int32_t digit);
 	char Tetra(uint8_t dat);
 	void Hex(uint8_t* pos, uint8_t dig);
 	void Hex(uint8_t pos, uint8_t dig);

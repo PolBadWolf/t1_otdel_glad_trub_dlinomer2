@@ -98,7 +98,7 @@ namespace ns_menu
 		uint8_t curPosPass;
 		// вводимый пароль
 		char inPass[5];
-		char eePass[5] EEMEM         = {3, 2, 4, 6, 3 };
+		char eePass[5] EEMEM         = {0, 0, 0, 0, 0 };
 		const char ffPass[5] PROGMEM = {2, 2, 3, 6, 0 };
 		// текущий датчик
 		uint8_t curSensor;
@@ -119,24 +119,36 @@ namespace ns_menu
 			printf_P( PSTR("%5d "), ns_vg::lenTube);
 		}
 	}
+	void Main_ViewMl(uint8_t k)
+	{
+		if (k == 6)
+		{
+			uint8_t pos = scr::SetPosition(8, 1);
+			scr::Digit(&pos, 1, ns_vg::tube_bNb);
+			scr::Digit(&pos, 1, ns_vg::tube_bNe);
+			scr::Digit(&pos, 4, ns_vg::tube_udl);
+		}
+	}
 	void Main_View(unsigned char k)
 	{
-		//uint16_t tmp;
 		if (ns_vg::lenTubeNew)
 		{
 			ns_vg::lenTubeNew = 0;
 			int8_t sta = ns_vg::lenTubeSta;
+			scr::Clear();
+			uint8_t pos = scr::SetPosition(0, 0);
+			scr::String_P( &pos, PSTR("L=") );
 			if ( sta==-1 )
 			{
-				scr::String_P(scr::SetPosition(2, 0), PSTR("Реверс"));
+				scr::String_P(&pos, PSTR("Реверс"));
 			}
 			if ( sta==1 )
 			{
-				scr::Digit(scr::SetPosition(2, 0), 6, ns_vg::lenTube);
+				scr::Digit(&pos, 6, ns_vg::lenTube);
 			}
 			if ( sta==2 )
 			{
-				scr::String_P(scr::SetPosition(2, 0), PSTR("Ошибка"));
+				scr::String_P(&pos, PSTR("Ошибка"));
 			}
 		}
 		// =========
@@ -151,15 +163,12 @@ namespace ns_menu
 				scr::PutChar(scr::SetPosition(i, 1), 1);
 			}
 		}
-		//
-		//scr::DigitZ(scr::SetPosition(10, 0), 2, ns_line::mode);
-		
 	}
 	void Main_menu(unsigned char k)
 	{
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
-		// SetMode(MENU_CHECK_PASS);
-		SetMode(MENU_SELECT);
+		SetMode(MENU_CHECK_PASS);
+		// SetMode(MENU_SELECT);
 	}
 	void Main_mins(unsigned char k)
 	{
@@ -531,7 +540,7 @@ namespace ns_menu
 	// 6 : timeout
 	const TyFnMn MassFnMn[][8] PROGMEM =
 	{//					view				key1				key2				key3				key4				key5			 setmode			 timeout          
-		{	       Main_View,	       Main_menu,				Dupm,				Dupm,				Dupm,				Dupm,       Main_SetMode,				Dupm },	// 0 main
+		{	       Main_View,	       Main_menu,				Dupm,				Dupm,				Dupm,		 Main_ViewMl,       Main_SetMode,				Dupm },	// 0 main
 		{ Menu_CheckPassView, Menu_CheckPassBack,Menu_CheckPassMinus, Menu_CheckPassPlus,	Menu_CheckPassVv,				Dupm,     Menu_CheckPass,				Dupm },	// 1 menu check pass
 		{				Dupm,	 Menu_SelectBack,	Menu_SelectMinus,	 Menu_SelectPlus,	   Menu_SelectVV,				Dupm,		 Menu_Select,				Dupm },	// 2 menu select
 		{				Dupm,	 Edit_SensorBack,	Edit_SensorMinus,	 Edit_SensorPlus,	   Edit_SensorVV,	Edit_SensorMulti,		 Edit_Sensor,				Dupm }, // 3 edit sensor

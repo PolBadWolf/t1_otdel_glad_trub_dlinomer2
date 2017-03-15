@@ -12,10 +12,14 @@
 //unsigned long  EEMEM ee_var1 = 3;
 //tc_pin<unsigned char> *l1 = new tc_pin<unsigned char>( &DDRE, &PORTE, &PINE, 4, 10 );
 
-/*namespace ns_line
+namespace ns_line
 {
 	extern tc_pin<uint16_t, uint16_t>* sensors[8];
-}*/
+}
+namespace ns_menu
+{
+	void Main_View2();
+}
 
 int main(void)
 {
@@ -86,18 +90,18 @@ int main(void)
 		//
 		ns_module::Main();
 		
-		/*{
-			scr::DigitZ(scr::SetPosition(10, 0), 2, ns_line::mode);
+		{
+			/*scr::DigitZ(scr::SetPosition(10, 0), 2, ns_line::mode);
 			uint8_t pos = scr::SetPosition(14, 0);
-			scr::DigitZ(&pos, 1, ns_line::sensors[0]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[1]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[2]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[3]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[4]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[5]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[6]->tr);
-			scr::DigitZ(&pos, 1, ns_line::sensors[7]->tr);
-			pos = scr::SetPosition(14, 1);
+			scr::DigitZ(&pos, 1, ns_line::sensors[0]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[1]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[2]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[3]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[4]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[5]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[6]->trFr);
+			scr::DigitZ(&pos, 1, ns_line::sensors[7]->trFr);*/
+			/*pos = scr::SetPosition(14, 1);
 			scr::DigitZ(&pos, 1, ns_line::sensors[0]->readSensor());
 			scr::DigitZ(&pos, 1, ns_line::sensors[1]->readSensor());
 			scr::DigitZ(&pos, 1, ns_line::sensors[2]->readSensor());
@@ -105,8 +109,8 @@ int main(void)
 			scr::DigitZ(&pos, 1, ns_line::sensors[4]->readSensor());
 			scr::DigitZ(&pos, 1, ns_line::sensors[5]->readSensor());
 			scr::DigitZ(&pos, 1, ns_line::sensors[6]->readSensor());
-			scr::DigitZ(&pos, 1, ns_line::sensors[7]->readSensor());
-		}*/
+			scr::DigitZ(&pos, 1, ns_line::sensors[7]->readSensor());*/
+		}
 	//ns_eeprom::read(&sd, sizeof(sd), &x );
 		/*
 		*ll[0]->port = 8;

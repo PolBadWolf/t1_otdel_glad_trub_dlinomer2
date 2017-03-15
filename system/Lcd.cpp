@@ -304,8 +304,15 @@ namespace ns_lcd
 		String_P(&pos, stroka);
 	}
 	// ==================================================
-	void DigitZ(uint8_t *pos, uint8_t len, uint32_t digit)
+	void DigitZ(uint8_t *pos, uint8_t len, int32_t digit)
 	{
+		if (digit < 0)
+		{
+			digit = -digit;
+			screen[*pos] = '-';
+			(*pos)++;
+			len--;
+		}
 		*pos += len;
 		NormalizePos(pos);
 		int8_t poz = *pos - 1;
@@ -320,13 +327,18 @@ namespace ns_lcd
 		}
 	}
 	// ==================================================
-	void DigitZ(uint8_t pos, uint8_t len, uint32_t digit)
+	void DigitZ(uint8_t pos, uint8_t len, int32_t digit)
 	{
 		DigitZ(&pos, len, digit);
 	}
 	// ==================================================
-	void Digit(uint8_t *pos, uint8_t len, uint32_t digit)
+	void Digit(uint8_t *pos, uint8_t len, int32_t digit)
 	{
+		if (digit < 0)
+		{
+			DigitZ(pos, len, digit);
+			return;
+		}
 		*pos += len;
 		NormalizePos(pos);
 		int8_t poz = *pos - 1;
@@ -350,7 +362,7 @@ namespace ns_lcd
 		}
 	}
 	// ==================================================
-	void Digit(uint8_t pos, uint8_t len, uint32_t digit)
+	void Digit(uint8_t pos, uint8_t len, int32_t digit)
 	{
 		Digit(&pos, len, digit);
 	}

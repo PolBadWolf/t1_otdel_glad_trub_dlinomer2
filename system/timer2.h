@@ -10,7 +10,7 @@
 #define __TIMER2_H__
 
 // частота таймера ( таймер0 )
-#define FtTimerMain 5000
+#define FtTimerMain 2000
 
 namespace ns_timerMain
 {

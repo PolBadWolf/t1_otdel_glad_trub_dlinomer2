@@ -57,6 +57,8 @@ namespace ns_line
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			sensors[i]->tr = 9;
+			sensors[i]->trFr = 0;
+			sensors[i]->trSp = 0;
 			sensors[i]->Interrupt();
 		}
 		
@@ -114,13 +116,11 @@ namespace ns_line
 			{
 				if (sensors[i]->trFr != 0)
 				{
-					sensors[i]->trFr = 0;
 					times[i][0] = count;
 					times[i][1] = 0;
 				}
 				if (sensors[i]->trSp != 0)
 				{
-					sensors[i]->trSp = 0;
 					times[i][1] = count;
 				}
 			}
@@ -273,6 +273,9 @@ namespace ns_line
 		mode = 1;
 		status = 1;
 		Telemetry(status, exN, n, bNe, base, udl);
+		ns_vg::tube_bNb = n;
+		ns_vg::tube_bNe = bNe;
+		ns_vg::tube_udl = udl;
 		return status;
 	}
 } //line

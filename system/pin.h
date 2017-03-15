@@ -71,8 +71,8 @@ public:
 			if ((iCount >= iPorog) && !iFl)
 			{
 				tr = iFl = 1;	// integral
-				flFr = 1;		// flag for protect time
-				flSp = 0;
+				flFr = 0;		// flag for protect time
+				flSp = 1;
 			}
 		}
 		else
@@ -81,8 +81,8 @@ public:
 			if ((iCount == (T)0) && iFl)
 			{
 				tr = iFl = 0;	// integral
-				flFr = 0;
-				flSp = 1;		// flag for protect time
+				flFr = 1;
+				flSp = 0;		// flag for protect time
 			}
 		}
 		// protect time

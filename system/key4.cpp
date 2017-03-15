@@ -18,8 +18,8 @@ typedef struct
 #define KEY_WR		(*((volatile BYTE_KEY_DATA*)(&PORTG))).data
 
 #define TIME_LINE 20
-#define TIME_STAB 30
-#define TIME_PUSH 80
+#define TIME_STAB 40
+#define TIME_PUSH 90
 #define TIME_AUTO 2000
 #define TIME_AUT1 (TIME_AUTO-50)
 #define TIME_AUT2 (20000 / 50)
