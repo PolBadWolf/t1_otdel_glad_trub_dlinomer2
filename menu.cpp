@@ -699,15 +699,66 @@ namespace ns_menu
 		SetMode(COR_COR_SENS_MEN);
 	}
 	// ==============================
+	uint8_t offBaseSQ7_tmp;
+	void Off_Sq7_BaseView()
+	{
+		uint8_t pos = scr::SetPosition(11, 1);
+		if (offBaseSQ7_tmp)
+		{
+			scr::String_P(&pos, PSTR("on "));
+		}
+		else
+		{
+			scr::String_P(&pos, PSTR("off"));
+		}
+	}
 	void Off_Sq7_Base(uint8_t k)
 	{
 		CRITICAL_SECTION { timeOut = 0; }
 		key4->autoRepeat = false;
+		offBaseSQ7_tmp = eeprom_read_byte(&ns_vg::eeBaseSQ7);
 		scr::Clear();
 		uint8_t pos = scr::SetPosition(0, 0);
 		scr::String_P(&pos, PSTR("select base line"));
 		pos = scr::SetPosition(0, 1);
 		scr::String_P(&pos, PSTR("sensor SQ7 "));
+		Off_Sq7_BaseView();
+		CRITICAL_SECTION { timeOut = TIMEOUT_STND; }
+	}
+	void Off_Sq7_BaseMn(uint8_t k)
+	{
+		key4->autoRepeat = false;
+		offBaseSQ7_tmp = 0;
+		Off_Sq7_BaseView();
+		CRITICAL_SECTION { timeOut = TIMEOUT_STND; }
+	}
+	void Off_Sq7_BasePl(uint8_t k)
+	{
+		key4->autoRepeat = false;
+		offBaseSQ7_tmp = 1;
+		Off_Sq7_BaseView();
+		CRITICAL_SECTION { timeOut = TIMEOUT_STND; }
+	}
+	void Off_Sq7_BaseTo(uint8_t k)
+	{
+		key4->autoRepeat = false;
+		CRITICAL_SECTION { timeOut = 0; }
+		SetMode(MAIN);
+	}
+	void Off_Sq7_BaseBc(uint8_t k)
+	{
+		key4->autoRepeat = false;
+		CRITICAL_SECTION { timeOut = 0; }
+		SetMode(MAIN);
+	}
+	void Off_Sq7_BaseEn(uint8_t k)
+	{
+		key4->autoRepeat = false;
+		CRITICAL_SECTION { timeOut = 0; }
+		eeprom_update_byte(&ns_vg::eeBaseSQ7, offBaseSQ7_tmp);
+		scr::String_P(scr::SetPosition(0, 1), PSTR("***сохранено*** "));
+		CRITICAL_SECTION { timeOut = 5000; }
+		SetMode(TIMEOUT_TO_MNSEL);
 	}
 	// ==============================
 	// ==============================
@@ -735,7 +786,7 @@ namespace ns_menu
 		{				Dupm,	TimeoutToMnSelBc,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,	  TimeoutToMnSel }, // 6 TIMEOUT_TO_MNSEL
 		{				Dupm,	Cor_CorSensMenBc,	Cor_CorSensMenMn,	Cor_CorSensMenPl,	Cor_CorSensMenVv,				Dupm,	  Cor_CorSensMen,				Dupm },	// 7 Cor_CorSensMen
 		{				Dupm,	   Cor_CorSensBc,	   Cor_CorSensMn,	   Cor_CorSensPl,	   Cor_CorSensVv,	   Cor_CorSensMt,		 Cor_CorSens,				Dupm },	// 8 Cor_CorSens
-		{				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,		Off_Sq7_Base,				Dupm }, // 9 OFF_SQ6_BASE
+		{				Dupm,	  Off_Sq7_BaseBc,	  Off_Sq7_BaseMn,	  Off_Sq7_BasePl,	  Off_Sq7_BaseEn,				Dupm,		Off_Sq7_Base,	  Off_Sq7_BaseTo }, // 9 OFF_SQ6_BASE
 		{				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm },
 		{				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm },
 		{				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm,				Dupm },
