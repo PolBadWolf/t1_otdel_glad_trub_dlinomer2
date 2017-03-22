@@ -18,5 +18,9 @@ namespace ns_vg
 	 int8_t  tube_bNe;
 	int16_t  tube_udl;
 	EEMEM uint16_t eeDistance[8] = {0, 1400, 2800, 4200, 5600, 7000, 13250, 13950};
-	EEMEM int16_t eeCorSensor[8] = { -0, -0, -0, -0, -0, -0, 0, 0};
+	EEMEM int16_t eeCorSensor[2][8] = {
+		{ 15, 15, 15, 15, 15, 15, 15, 15},
+		{ 15, 15, 15, 15, 15, 15, 15, 15}
+	};
+	EEMEM uint8_t eeBaseSQ7 = 1;
 }

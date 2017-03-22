@@ -18,13 +18,14 @@ namespace ns_line
 }
 namespace ns_menu
 {
-	void Main_View2();
+	void Menu_Select(unsigned char k);
 }
 
 int main(void)
 {
 	// Инициализация
 	ns_device::Init();
+	ns_menu::Menu_Select((uint8_t)2 );
 	stdout = lcdStdOut;
 	//
 	ns_module::Init();

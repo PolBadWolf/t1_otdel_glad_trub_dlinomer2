@@ -19,7 +19,7 @@ namespace ns_line
 	int32_t count;				// счетчик тайминга
 	int32_t times[8][2];			// массив таймингов сработок датчиков
 	uint16_t distance[8] = {0, 1400, 2800, 4200, 5600, 7000, 13250, 13950};
-	int16_t corSensor[8];
+	int16_t corSensor[8][2];
 	uint8_t mode = 2;						// режим работы
 //	uint16_t timeOut = 0;					// тайм аут
 	// карта датчиков
@@ -159,8 +159,20 @@ namespace ns_line
 		fprintf_P(stdTeleOut, PSTR("Distance:    "));
 		for (uint8_t i=0; i<8; i++)
 		{
-			//fprintf_P(stdTeleOut, PSTR("%12d"), distance[i]);
 			rsTele::Digit(12, distance[i]);
+		}
+		fprintf_P(stdTeleOut, PSTR("\r\n"));
+		// correction
+		fprintf_P(stdTeleOut, PSTR("Corr. in :   "));
+		for (uint8_t i=0; i<8; i++)
+		{
+			rsTele::Digit(12, corSensor[i][0]);
+		}
+		fprintf_P(stdTeleOut, PSTR("\r\n"));
+		fprintf_P(stdTeleOut, PSTR("Corr. out :  "));
+		for (uint8_t i=0; i<8; i++)
+		{
+			rsTele::Digit(12, corSensor[i][1]);
 		}
 		fprintf_P(stdTeleOut, PSTR("\r\n"));
 		//rsTele::String_P(PSTR("\r\n"));
@@ -178,7 +190,8 @@ namespace ns_line
 			//fprintf_P(stdTeleOut, PSTR("%12d"), times[i][1]);
 			rsTele::Digit(12, times[i][1]);
 		}
-		fprintf_P(stdTeleOut, PSTR("\r\nTELE End\r\n"));
+		fprintf_P(stdTeleOut, PSTR("\r\n"));
+		fprintf_P(stdTeleOut, PSTR("TELE End\r\n"));
 		
 		
 	}
@@ -191,7 +204,8 @@ namespace ns_line
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			distance[i] = eeprom_read_word(&ns_vg::eeDistance[i]);
-			corSensor[i] = (int16_t)eeprom_read_word( (uint16_t *)&ns_vg::eeCorSensor[i] );
+			corSensor[i][0] = (int16_t)eeprom_read_word( (uint16_t *)&ns_vg::eeCorSensor[0][i] );
+			corSensor[i][1] = (int16_t)eeprom_read_word( (uint16_t *)&ns_vg::eeCorSensor[1][i] );
 		}
 		uint8_t status;
 		// ===================
@@ -239,16 +253,19 @@ namespace ns_line
 			return status;
 		}
 		// render solution
-		int32_t ex[3];
+		int32_t ex[3] = {999999, 999999, 999999};
 		if (times[7][0] > times[n][1])					// base = d(7)-d(n)			cor -
 				ex[0] = times[7][0] - times[n][1];
 		else	ex[0] = 999999;
-		if (times[6][0] <= times[n][1])					// base = d(6)-d(n)			cor +
-				ex[1] = times[n][1] - times[6][0];
-		else	ex[1] = 999999;
-		if (times[6][0] > times[n][1])					// base = d(6)-d(n)			cor -
-				ex[2] = times[6][0] - times[n][1];
-		else	ex[2] = 999999;
+		if (eeprom_read_byte(&ns_vg::eeBaseSQ7))
+		{
+			if (times[6][0] <= times[n][1])					// base = d(6)-d(n)			cor +
+					ex[1] = times[n][1] - times[6][0];
+			else	ex[1] = 999999;
+			if (times[6][0] > times[n][1])					// base = d(6)-d(n)			cor -
+					ex[2] = times[6][0] - times[n][1];
+			else	ex[2] = 999999;
+		}
 		//
 		uint16_t base;
 		int32_t dochetT = 999999;
@@ -264,9 +281,9 @@ namespace ns_line
 				else bNe = 6;
 			}
 		}
-		base = (distance[bNe] + corSensor[bNe]) - (distance[n] + corSensor[n]);
+		base = (distance[bNe] - corSensor[bNe][0]) - (distance[n] + corSensor[n][1]);
 		dochetT = times[n][1] - times[bNe][0];
-		uint16_t sampleLen = (distance[7] + corSensor[7]) - (distance[6] + corSensor[6]);
+		uint16_t sampleLen = (distance[7] - corSensor[7][0]) - (distance[6] - corSensor[6][0]);
 		int32_t sampleTime = times[7][0] - times[6][0];
 		int16_t udl = (uint16_t)( ((int64_t)dochetT) * ((int64_t)sampleLen) / ((int64_t)sampleTime) );
 		*dlina = base + udl;

@@ -16,7 +16,8 @@ namespace ns_vg
 	extern uint8_t  lenTubeNew;
 	extern  int8_t  lenTubeSta;
 	extern EEMEM uint16_t eeDistance[];
-	extern EEMEM int16_t  eeCorSensor[];
+	extern EEMEM int16_t eeCorSensor[2][8];
+	extern EEMEM uint8_t eeBaseSQ7;
 	extern int8_t  tube_bNb;
 	extern int8_t  tube_bNe;
 	extern int16_t tube_udl;
