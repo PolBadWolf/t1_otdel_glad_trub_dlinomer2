@@ -166,13 +166,15 @@ namespace ns_line
 		fprintf_P(stdTeleOut, PSTR("Corr. in :   "));
 		for (uint8_t i=0; i<8; i++)
 		{
-			rsTele::Digit(12, corSensor[i][0]);
+			rsTele::String_P(PSTR("      "));
+			rsTele::Digit(6, corSensor[i][0]);
 		}
 		fprintf_P(stdTeleOut, PSTR("\r\n"));
 		fprintf_P(stdTeleOut, PSTR("Corr. out :  "));
 		for (uint8_t i=0; i<8; i++)
 		{
-			rsTele::Digit(12, corSensor[i][1]);
+			rsTele::String_P(PSTR("      "));
+			rsTele::Digit(6, corSensor[i][1]);
 		}
 		fprintf_P(stdTeleOut, PSTR("\r\n"));
 		//rsTele::String_P(PSTR("\r\n"));

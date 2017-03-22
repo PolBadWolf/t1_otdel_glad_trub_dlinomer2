@@ -241,12 +241,8 @@ namespace ns_rs232
 			digit = -digit;
 		}
 		sss[len] = 0;
-		//len--;
 
-		volatile uint8_t low;// = digit % 10;
-		//sss[len] = '0' + low;
-		//digit /= 10;
-		//len--;
+		volatile uint8_t low;
 		while(len-- > por)
 		{
 			low = digit % 10;
