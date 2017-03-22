@@ -214,8 +214,8 @@ namespace ns_rs232
 	{
 		if (digit < 0) { DigitZ(len, digit); return; }
 		char sss[24+2];
-		sss[len+1] = 0;
-		//len--;
+		sss[len] = 0;
+		len--;
 
 		uint8_t low = digit % 10;
 		sss[len] = '0' + low;
